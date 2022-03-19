@@ -32,7 +32,7 @@ const CrearCuenta = () => {
       .then(function (response) {
         if (response.status === 200) {
           Swal.fire("Creado correctamente", "success");
-          history('/home');
+          history('/');
         } else {
           Swal.fire("Something is Wrong :(!", "try again later", "error");
         }

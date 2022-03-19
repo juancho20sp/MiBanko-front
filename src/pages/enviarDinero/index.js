@@ -89,7 +89,7 @@ const EnviarDinero = ({isOverdraw}) => {
 						.then((response) => {
 							if (response.status === 200) {
 								Swal.fire(
-									'Dinero enviado correctamente',
+									'Transaccion realizada correctamente',
 									'success'
 								);
 								history('/home');
@@ -118,7 +118,7 @@ const EnviarDinero = ({isOverdraw}) => {
 					.then((response) => {
 						if (response.status === 200) {
 							Swal.fire(
-								'Dinero enviado correctamente',
+								'Transaccion realizada correctamente',
 								'success'
 							);
 						history('/home');
