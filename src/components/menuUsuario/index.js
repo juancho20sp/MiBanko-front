@@ -18,12 +18,7 @@ import {
 const MenuUsuario = ({ userData }) => {
   const [balance, setBalance] = useState("Cargando..");
 
-
-
   useEffect(() => {
-    // $
-    debugger;
-
     let location = "api/v1/users";
     let body = {
       usr_doctype: userData.user.usr_doctype,

@@ -34,9 +34,6 @@ const Login = () => {
   }
 
   async function handlesubmit_homeUsuario(event) {
-    // $
-    debugger;
-
     event.preventDefault();
     //
     const data = new FormData(event.currentTarget);
@@ -47,14 +44,9 @@ const Login = () => {
       password: data.get("password"),
     };
 
-
-    // $
-    debugger;
     await axios.post(window.$dir + location + `/`, body)
     .then(response => response.data)
     .then((response) => {
-      // $
-    debugger;
       if (response.user && response.user.token) {
         localStorage.setItem('user',JSON.stringify(response));
       }
