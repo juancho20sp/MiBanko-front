@@ -17,20 +17,28 @@ import {
 } from "./menuPrincipalElements.js";
 const MenuUsuario = ({ userData }) => {
   const [balance, setBalance] = useState("Cargando..");
+
+
+
   useEffect(() => {
+    // $
+    debugger;
+
     let location = "api/v1/users";
     let body = {
-      usr_doctype: userData.usr_doctype,
-      usr_numdoc: userData.usr_numdoc,
+      usr_doctype: userData.user.usr_doctype,
+      usr_numdoc: userData.user.usr_numdoc,
     };
+
     axios
       .post(window.$dir + location + `/getUserBalance`, body)
+      .then(res => res.data)
       .then((response) => {
-        if (response.data && response.data.acc_balance) {
-          setBalance(response.data.acc_balance);
+        if (typeof response.acc_balance === 'number') {
+          setBalance(response.acc_balance);
         }
       });
-  }, [userData]);
+  }, []);
   return (
     <div>
       <RootWrapperHomeUsuario>
