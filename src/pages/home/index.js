@@ -8,7 +8,7 @@ const Home = () => {
   );
   return (
     <div>
-      {currentUser && currentUser.role != "ADMIN" ? (
+      {currentUser && currentUser.user.usr_role != "ADMIN" ? (
         <MenuUsuario userData={currentUser} />
       ) : (
         <MenuAdmin />

@@ -3,9 +3,12 @@ import React,  { useState, useEffect } from 'react'
 export const Movimientos = () => {
   const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log(currentUser);
     const fetchData = async () => {
+      setIsLoading(true);
       const res = await fetch( window.$dir+'api/v1/transactions/getTransactionsDetail',{
                           method: 'GET',
                           headers: {
@@ -14,10 +17,10 @@ export const Movimientos = () => {
                         }
                       );
       const parsedRes = await res.json();
-
-      switch (currentUser.role) {
+      setIsLoading(false);
+      switch (currentUser.user.usr_role) {
         case 'CLIENT':
-          const res = parsedRes.result.filter(item => item.source_numdoc === currentUser.usr_numdoc || item.destiny_numdoc === currentUser.usr_numdoc);
+          const res = parsedRes.result.filter(item => item.source_numdoc === currentUser.user.usr_numdoc || item.destiny_numdoc === currentUser.user.usr_numdoc);
           setData(res);
           break;
         default:
@@ -47,7 +50,7 @@ export const Movimientos = () => {
         <div>
           <ul>
               {
-                data[0]?
+                (!isLoading  && data[0])?
                 data && data.map((item, idx)=> {
                   return <li key={idx}>
                     <p>Fecha: {item.date.split('T')[0]}</p>
@@ -57,7 +60,10 @@ export const Movimientos = () => {
                   </li>
                 })
                 :
-                <p>Cargando..</p>
+                !isLoading?
+                <p>Sin movimientos.</p>
+                :
+                <p>Cargando...</p>
               }
           </ul>
         </div>

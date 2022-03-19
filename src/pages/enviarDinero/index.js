@@ -27,8 +27,8 @@ const EnviarDinero = ({isOverdraw}) => {
 			})
 		location = 'api/v1/users';
 		let body={
-			usr_doctype: currentUser.usr_doctype,
-			usr_numdoc: currentUser.usr_numdoc
+			usr_doctype: currentUser.user.usr_doctype,
+			usr_numdoc: currentUser.user.usr_numdoc
 		}
 		axios.post(window.$dir+location+`/getUserBalance`,body)
 			.then((response) => {
@@ -51,6 +51,7 @@ const EnviarDinero = ({isOverdraw}) => {
 	}, [userAccount])
 	function handleSubmit(event) {
 		event.preventDefault();
+
 		const data = new FormData(event.currentTarget);
 		if (isOverdraw){
 			setAmmountOverdraw((data.get('cantidad'))-balance);
@@ -58,28 +59,28 @@ const EnviarDinero = ({isOverdraw}) => {
 		let location = 'api/v1/accounts';
 		let body = {
 			account: {
-				document_number: currentUser.usr_numdoc,
-				document_type: currentUser.usr_doctype,
+				document_number: currentUser.user.usr_numdoc,
+				document_type: currentUser.user.usr_doctype,
 				acc_type: selectedBx
 			}
 		}
+		if (selectedBx) {
 		axios.post(window.$dir + location + `/getAccount`, body)
 			.then((response) => {
 				if(response.data ){
-
 					return response.data;
 				}
 			}
 		).then(
 			res =>{
-				if (data.get('banco') == 1 ){
+				if ( isOverdraw || (Number(data.get('cantidad'))<balance && data.get('banco') == 1 )){
 					let body = {
 						transactionIntra: {
 							destiny_account: data.get('cuenta'),
 							source_acc: res[0].acc_number,
 							amount: Number(data.get('cantidad')),
-							tdoc: currentUser.usr_doctype,
-							ndoc: Number(currentUser.usr_numdoc),
+							tdoc: currentUser.user.usr_doctype,
+							ndoc: Number(currentUser.user.usr_numdoc),
 							overdraw: isOverdraw,
 							amount_overdraw: amountOverdraw
 						}
@@ -98,7 +99,7 @@ const EnviarDinero = ({isOverdraw}) => {
 							}
 		
 							})
-			} if (data.get('banco') != 1) {
+			} else  if ( isOverdraw || (Number(data.get('cantidad'))<balance && data.get('banco') != 1 )) {
 				body = {
 					transactionInter:{
 						tr_destiny_bank: Number(data.get('banco')),
@@ -112,7 +113,7 @@ const EnviarDinero = ({isOverdraw}) => {
 						overdraw: isOverdraw,
 						amount_overdraw: amountOverdraw
 						}
-				}
+				} 
 				axios.post(window.$dir + `api/v1/transactions/createTransactionInter`, body)
 					.then((response) => {
 						if (response.status === 200) {
@@ -126,10 +127,20 @@ const EnviarDinero = ({isOverdraw}) => {
 							Swal.fire("Something is Wrong :(!", "try again later", "error");
 						}
 					})
+				}else {Swal.fire(
+					'No posee fondos suficientes',
+					'warning'
+				);
 				}
 			}
 		)
-		//event.target.reset(); <- Limpiar formulario
+		} else {
+			Swal.fire(
+				'Por favor seleccionar tipo de cuenta',
+				'Warning'
+			);
+		}
+		event.target.reset(); 
 	}
 
 	return (
@@ -154,8 +165,8 @@ const EnviarDinero = ({isOverdraw}) => {
 					<Rectangle10 />
 					<Rectangle8 />
 					<Cantidad type="number" name="cantidad" placeholder="$" />
-					<Cuenta name="cuenta" placeholder="Cuenta : " type="number" />
-					<SeleccionarBanco name="banco" >
+					<Cuenta name="cuenta" placeholder="Cuenta : " type="number" required/>
+					<SeleccionarBanco name="banco" required>
 						<option value="" hidden>seleccione un Banco</option>
 						{banks.map((element, index) => {
 							return (
