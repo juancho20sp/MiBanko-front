@@ -6,7 +6,6 @@ export const Movimientos = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log(currentUser);
     const fetchData = async () => {
       setIsLoading(true);
       const res = await fetch( window.$dir+'api/v1/transactions/getTransactionsDetail',{
