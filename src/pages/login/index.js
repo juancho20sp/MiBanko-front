@@ -14,6 +14,9 @@ import {
 } from "./LoginElements.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import SetCookie from "../../hooks/setCookie.js";
+import RemoveCookie from "../../hooks/removeCookie.js";
+
 const Login = () => {
   let history = useNavigate();
 
@@ -47,11 +50,12 @@ const Login = () => {
     await axios.post(window.$dir + location + `/`, body)
     .then(response => response.data)
     .then((response) => {
-      if (response.user && response.user.token) {
-        localStorage.setItem('user',JSON.stringify(response));
+      if (response.user.token) {
+        RemoveCookie('usr');
+        SetCookie('usr', JSON.stringify(response.user.token));
+        history("/home");
       }
     });
-    history("/home");
     event.target.reset();
   }
 

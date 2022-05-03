@@ -1,6 +1,7 @@
 import React,  { useState, useEffect } from 'react'
+import authPage from '../../hooks/authPage';
 
-export const Transferencias = () => {
+const Transferencias = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -37,3 +38,4 @@ export const Transferencias = () => {
   )
 }
 
+export default authPage(Transferencias)

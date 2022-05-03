@@ -3,11 +3,14 @@ import styled from "styled-components";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
-
+import GetCookie from "../../hooks/getCookie";
+import jwt from 'jwt-decode';
+import authPage from '../../hooks/authPage';
 
 const EnviarDinero = ({isOverdraw}) => {
 	let history = useNavigate();
-	const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+	const [currentUser, setCurrentUser] = useState([]);
+  
 	const [ balance, setBalance] = useState("Cargando..");
 	const [banks, setBanks] = useState([" "]);
 	const [userAccount, setUserAccount] = useState([" "]);
@@ -16,6 +19,8 @@ const EnviarDinero = ({isOverdraw}) => {
 
 
 	useEffect(() => {
+		let response = jwt(GetCookie('usr'));
+		setCurrentUser(response.user);
 		let location = 'api/v1/banks';
 		axios.get(window.$dir + location + `/`)
 			.then((response) => {
@@ -27,8 +32,8 @@ const EnviarDinero = ({isOverdraw}) => {
 			})
 		location = 'api/v1/users';
 		let body={
-			usr_doctype: currentUser.user.usr_doctype,
-			usr_numdoc: currentUser.user.usr_numdoc
+			usr_doctype: currentUser.usr_doctype,
+			usr_numdoc: currentUser.usr_numdoc
 		}
 		axios.post(window.$dir+location+`/getUserBalance`,body)
 			.then((response) => {
@@ -59,8 +64,8 @@ const EnviarDinero = ({isOverdraw}) => {
 		let location = 'api/v1/accounts';
 		let body = {
 			account: {
-				document_number: currentUser.user.usr_numdoc,
-				document_type: currentUser.user.usr_doctype,
+				document_number: currentUser.usr_numdoc,
+				document_type: currentUser.usr_doctype,
 				acc_type: selectedBx
 			}
 		}
@@ -79,8 +84,8 @@ const EnviarDinero = ({isOverdraw}) => {
 							destiny_account: data.get('cuenta'),
 							source_acc: res[0].acc_number,
 							amount: Number(data.get('cantidad')),
-							tdoc: currentUser.user.usr_doctype,
-							ndoc: Number(currentUser.user.usr_numdoc),
+							tdoc: currentUser.usr_doctype,
+							ndoc: Number(currentUser.usr_numdoc),
 							overdraw: isOverdraw,
 							amount_overdraw: amountOverdraw
 						}
@@ -195,7 +200,7 @@ const EnviarDinero = ({isOverdraw}) => {
 		</div>
 	)
 }
-export default EnviarDinero
+export default authPage(EnviarDinero)
 
 const RootWrapperEnviarDinero = styled.div`
 	min-height: 100vh;

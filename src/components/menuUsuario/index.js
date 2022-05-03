@@ -15,25 +15,36 @@ import {
   Rectangle5Stroke,
   Salir,
 } from "./menuPrincipalElements.js";
+import RemoveCookie from "../../hooks/removeCookie.js";
+import GetCookie from "../../hooks/getCookie.js";
+import { useNavigate } from "react-router-dom";
+
 const MenuUsuario = ({ userData }) => {
+  let history = useNavigate();
   const [balance, setBalance] = useState("Cargando..");
 
   useEffect(() => {
-    let location = "api/v1/users";
-    let body = {
-      usr_doctype: userData.user.usr_doctype,
-      usr_numdoc: userData.user.usr_numdoc,
-    };
+    const fetchData = async () => {
+      let location = "api/v1/users";
+      let body = {
+        usr_doctype: userData.usr_doctype,
+        usr_numdoc: userData.usr_numdoc,
+      };
+      await axios
+        .post(window.$dir + location + `/getUserBalance`, body)
+        .then(res => res.data)
+        .then((response) => {
+          if (typeof response.acc_balance === 'number') {
+            setBalance(response.acc_balance);
+          }
+        });
+    }
+    fetchData();
+  }, [userData]);
 
-    axios
-      .post(window.$dir + location + `/getUserBalance`, body)
-      .then(res => res.data)
-      .then((response) => {
-        if (typeof response.acc_balance === 'number') {
-          setBalance(response.acc_balance);
-        }
-      });
-  }, []);
+  const logOut = (e) => {
+    RemoveCookie('usr')
+  }
   return (
     <div>
       <RootWrapperHomeUsuario>
@@ -60,7 +71,7 @@ const MenuUsuario = ({ userData }) => {
           Ver mis movimientos
         </VerMisMovimientosBtn>
         <SobregirarBtn to={"/sobregirar"}>Sobregirar</SobregirarBtn>
-        <Salir to={"/"}>Salir</Salir>
+        <Salir to={"/"} onClick={logOut}>Salir</Salir>
       </RootWrapperHomeUsuario>
     </div>
   );

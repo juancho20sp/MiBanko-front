@@ -1,7 +1,15 @@
 import React,  { useState, useEffect } from 'react'
+import GetCookie from "../../hooks/getCookie";
+import jwt from 'jwt-decode'; 
+import authPage from '../../hooks/authPage';
 
-export const Movimientos = () => {
-  const [currentUser,setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+const VerMovimientos = () => {
+  const [currentUser, setCurrentUser] = useState([]);
+  useEffect(() => {
+    let response = jwt(GetCookie('usr'));
+    setCurrentUser(response.user);
+  }, []);
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +27,7 @@ export const Movimientos = () => {
       setIsLoading(false);
       switch (currentUser.user.usr_role) {
         case 'CLIENT':
-          const res = parsedRes.result.filter(item => item.source_numdoc === currentUser.user.usr_numdoc || item.destiny_numdoc === currentUser.user.usr_numdoc);
+          const res = parsedRes.result.filter(item => item.source_numdoc === currentUser.usr_numdoc || item.destiny_numdoc === currentUser.usr_numdoc);
           setData(res);
           break;
         default:
@@ -70,3 +78,4 @@ export const Movimientos = () => {
   )
 }
 
+export default authPage(VerMovimientos);

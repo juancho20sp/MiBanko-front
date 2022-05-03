@@ -2,7 +2,8 @@ import { React, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import BoxSobregiros from "../../components/boxSobregiros";
-export function AutorizarSobregiro() {
+import authPage from "../../hooks/authPage";
+const AutorizarSobregiro = () => {
   const [overdraws, setOverdraws] = useState([" "]);
   useEffect(() => {
     axios
@@ -39,6 +40,8 @@ export function AutorizarSobregiro() {
     </RootWrapperAutorizarSobregiro>
   );
 }
+
+export default authPage(AutorizarSobregiro)
 
 const BoxContainer = styled.div`
   display: flex;

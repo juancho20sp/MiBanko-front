@@ -3,13 +3,19 @@ import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import authPage from "../../hooks/authPage";
+import GetCookie from "../../hooks/getCookie";
+import jwt from 'jwt-decode';
 
-export function ModificarDinero() {
-	const [currentUserAdmin,setCurrentUserAdmin] = useState(JSON.parse(localStorage.getItem('user')));
+const ModificarDinero = () => {
+  const [currentUser, setCurrentUser] = useState([]);
+  useEffect(() => {
+    let response = jwt(GetCookie('usr'));
+    setCurrentUser(response.user);
+  }, []);
 
   let history = useNavigate();
   const [users, setUsers] = useState([" "]);
-  const [currentUser, setCurrentUser] = useState();
   const [currentUserBalance, setCurrentUserBalance] = useState(0);
   const [selectedBx, setBx] = useState("");
   useEffect(() => {
@@ -145,6 +151,8 @@ export function ModificarDinero() {
     </div>
   );
 }
+
+export default authPage(ModificarDinero);
 
 const RootWrapperModificarDinero = styled.div`
   min-height: 100vh;
