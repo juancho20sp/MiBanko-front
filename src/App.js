@@ -3,10 +3,10 @@ import Login from "./pages/login";
 import Home from "./pages/home";
 import CrearCuenta from "./pages/crearUsuario";
 import EnviarDinero from "./pages/enviarDinero";
-import { ModificarDinero } from "./pages/modificarDinero";
-import { AutorizarSobregiro } from "./pages/autorizarSobregiro";
-import { Movimientos } from './pages/verMovimientos';
-import { Transferencias } from './pages/verTransferencias';
+import ModificarDinero from "./pages/modificarDinero";
+import AutorizarSobregiro from "./pages/autorizarSobregiro";
+import VerMovimientos from './pages/verMovimientos';
+import Transferencias from './pages/verTransferencias';
 
 
 function App() {  
@@ -20,7 +20,7 @@ function App() {
           <Route path="/enviarDinero" element={<EnviarDinero isOverdraw={false}/>} />
           <Route path="/modificarDinero" element={<ModificarDinero/>} />
           <Route path="/autorizarSobregiro" element={<AutorizarSobregiro/>} />
-          <Route path="/verMovimientos" element={<Movimientos/>} />
+          <Route path="/verMovimientos" element={<VerMovimientos/>} />
           <Route path="/verTotalTransferencias" element={<Transferencias/>} />
           <Route path="/sobregirar" element={<EnviarDinero isOverdraw={true} />} />
         </Routes>
