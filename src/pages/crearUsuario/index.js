@@ -41,7 +41,7 @@ const CrearCuenta = () => {
   };
   return (
     <div className="form-content">
-      <form onSubmit={handleSubmit} className="form" noValidate>
+      <form onSubmit={handleSubmit} className="form">
         <RootWrapperCrearCuenta>
           <Rectangle5 />
           <CrearUsuario>Crear usuario</CrearUsuario>
@@ -63,18 +63,18 @@ const CrearCuenta = () => {
             <option value="CE">C.E</option>
             <option value="PS">P.S</option>
           </TipoDeDocumento>
-          <Usuario name="username" placeholder="Usuario" />
-          <Email name="email" placeholder="Email" />
-          <Apellido name="user_lastname" placeholder="Apellido" />
+          <Usuario name="username" placeholder="Usuario" required/>
+          <Email name="email" placeholder="Email" required/>
+          <Apellido name="user_lastname" placeholder="Apellido" required/>
           <NúmeroDeDocumento
             name="document_number"
             placeholder="NúmeroDeDocumento"
-            type="number"
+            type="number" required
           />
           <Contraseña
             name="password"
             placeholder="Contraseña"
-            type="password"
+            type="password" required
           />
           <ConfirmarContraseña
             name="confirm_password"
