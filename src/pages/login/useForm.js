@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import SetCookie from "./hooks/setCookie";
-import RemoveCookie from "./hooks/removeCookie.js";
+import SetCookie from "../../hooks/setCookie";
+import RemoveCookie from "../../hooks/removeCookie.js";
 
 const useForm = (validate) => {
   let history = useNavigate();
   const [values, setValues] = useState({
-    email: '',
-    message: ''
+    email: ''
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
