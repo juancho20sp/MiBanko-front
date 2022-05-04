@@ -1,6 +1,17 @@
 import styled from  'styled-components';
 import { Link as LinkR } from 'react-router-dom';
 
+export const AlertUser = styled.p`
+background: #F00741;
+font-size: 25px;
+font-family: Roboto, sans-serif;
+font-weight: 400;
+text-align: left;
+position: absolute;
+left: 502px;
+top: 350px;
+`;
+
 export const RootWrapperLogin = styled.div`
 min-height: 100vh;
 background-color: rgba(255, 255, 255, 1);

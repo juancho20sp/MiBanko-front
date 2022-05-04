@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import useForm from '../../useForm';
 import {
   RootWrapperLogin,
   MiBanko,
@@ -11,53 +12,14 @@ import {
   CrearCuentaBtn,
   IngresarBtn,
   UsuarioInput,
+  AlertUser,
 } from "./LoginElements.js";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import SetCookie from "../../hooks/setCookie.js";
-import RemoveCookie from "../../hooks/removeCookie.js";
+import validate from '../../hooks/validateInfo';
 
 const Login = () => {
-  let history = useNavigate();
-
-  const handlers = {
-    crearCuenta: handlesubmit_crearCuenta,
-    homeUsuario: handlesubmit_homeUsuario,
-  };
-  const submitHandler = (e) => {
-    const { id } = e.nativeEvent.submitter;
-    handlers[id](e);
-  };
-
-  function handlesubmit_crearCuenta(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    history("/crearCuenta");
-    event.target.reset();
-  }
-
-  async function handlesubmit_homeUsuario(event) {
-    event.preventDefault();
-    //
-    const data = new FormData(event.currentTarget);
-    let location = "api/v1/login";
-    let body = {};
-    body = {
-      email: data.get("user"),
-      password: data.get("password"),
-    };
-
-    await axios.post(window.$dir + location + `/`, body)
-    .then(response => response.data)
-    .then((response) => {
-      if (response.user.token) {
-        RemoveCookie('usr');
-        SetCookie('usr', JSON.stringify(response.user.token));
-        history("/home");
-      }
-    });
-    event.target.reset();
-  }
+  const { handleChange, submitHandler, values, errors } = useForm(
+    validate
+  );
 
   return (
     <div className="form-content">
@@ -67,13 +29,23 @@ const Login = () => {
           <MiBanko>MiBanko</MiBanko>
           <Rectangle1 />
           <Rectangle2 />
-          <UsuarioInput id="user" name="user" placeholder="Usuario" />
+          <UsuarioInput 
+            id="user" 
+            name="user" 
+            placeholder="Usuario"
+            value={values.user}
+            onChange={handleChange}
+          />
+           {errors.user && <AlertUser>{errors.user}</AlertUser>}
           <ContraseñaInput
             id="password"
             name="password"
             placeholder="Contraseña"
             type="password"
+            value={values.password}
+            onChange={handleChange}
           />
+           {errors.password && <p>{errors.password}</p>}
           <Rectangle3 />
           <Rectangle4 />
           <CrearCuentaBtn id="crearCuenta">Crear cuenta</CrearCuentaBtn>
