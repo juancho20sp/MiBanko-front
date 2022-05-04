@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link as LinkR } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -314,23 +313,4 @@ const CrearCuentaBtn = styled.button`
   position: absolute;
   left: 667px;
   top: 776px;
-`;
-
-const Rectangle11_0001 = styled.div`
-  width: 82px;
-  height: 70px;
-  background-color: rgba(0, 0, 0, 1);
-  border-radius: 20px;
-  position: absolute;
-  left: 658px;
-  top: 351px;
-`;
-
-const Polygon2 = styled.svg`
-  width: 45px;
-  height: 52px;
-  position: absolute;
-  left: 677px;
-  top: 360px;
-  transform: rotate(180deg);
 `;
