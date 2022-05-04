@@ -10,9 +10,7 @@ const CrearCuenta = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let location = "api/v1/users";
-    //
     const data = new FormData(event.currentTarget);
-    //fetch
     let body = {};
     body = {
       user: {

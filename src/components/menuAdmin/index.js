@@ -2,6 +2,8 @@ import { React, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link as LinkR } from "react-router-dom";
 import axios from "axios";
+import RemoveCookie from "../../hooks/removeCookie.js";
+
 export function MenuAdmin() {
   const [totalBalance, setTotalBalance] = useState("Cargando..");
   useEffect(() => {
@@ -12,6 +14,9 @@ export function MenuAdmin() {
       }
     });
   }, []);
+  const logOut = (e) => {
+    RemoveCookie('usr')
+  }
   return (
     <RootWrapperHomeAdmin>
       <Rectangle5Stroke xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +40,7 @@ export function MenuAdmin() {
       <Rectangle8 />
       <Rectangle7 />
       <Rectangle9 />
-      <EnviarDinero></EnviarDinero>
+      <EnviarDinero to={"/"} onClick={logOut}>Salir</EnviarDinero>
       <VerTodosLosMovimientos to={"/verMovimientos"}>
         Ver todos los movimientos
       </VerTodosLosMovimientos>
@@ -148,7 +153,7 @@ const Rectangle9 = styled.div`
   top: 740px;
 `;
 
-const EnviarDinero = styled.div`
+const EnviarDinero = styled(LinkR)`
   color: rgba(255, 255, 255, 1);
   text-overflow: ellipsis;
   font-size: 40px;
