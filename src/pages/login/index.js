@@ -1,5 +1,5 @@
 import { React } from "react";
-import useForm from '../../useForm';
+import useForm from './useForm';
 import {
   RootWrapperLogin,
   MiBanko,
@@ -13,6 +13,7 @@ import {
   IngresarBtn,
   UsuarioInput,
   AlertUser,
+  AlertPassword
 } from "./LoginElements.js";
 import validate from '../../hooks/validateInfo';
 
@@ -45,7 +46,7 @@ const Login = () => {
             value={values.password}
             onChange={handleChange}
           />
-           {errors.password && <p>{errors.password}</p>}
+           {errors.password && <AlertPassword>{errors.password}</AlertPassword>}
           <Rectangle3 />
           <Rectangle4 />
           <CrearCuentaBtn id="crearCuenta">Crear cuenta</CrearCuentaBtn>
